@@ -2,18 +2,18 @@ import { useState } from 'react'
 
 import './App.css'
 
+import Post from './Post.jsx'
+import Header from './Header.jsx'
+
 function App() {
   const [count, setCount] = useState(0)
 
   return (
     <main>
-      <header>
-        <a href="" className="logo">MyBlog</a>
-        <nav>
-          <a href="">Login</a>
-          <a href="">Register</a>
-        </nav>
-      </header>
+      <Header/>
+      <Post/>
+      <Post/>
+      <Post/>
     </main>
   )
 }
