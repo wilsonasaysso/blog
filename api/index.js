@@ -6,6 +6,8 @@ const bcrypt = require('bcryptjs');
 const app = express();
 const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
+const multer = require('multer');
+const uploadMiddleware = multer({dest: 'uploads/'});
 
 const secret = "ekrjnekjbnkj34kj35ngkjenr";
 const salt = bcrypt.genSaltSync(10);
@@ -14,7 +16,10 @@ app.use(cors({credentials: true, origin:'http://localhost:5173'}));
 app.use(express.json());
 app.use(cookieParser());
 
-mongoose.connect('mongodb+srv://blog:5VN3Lpkiq0rFuEGT@cluster0.kmf7hsg.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0');
+mongoose.connect('mongodb+srv://altushkalover:93RYeUheyMSzCJzd@cluster0.gnbef0u.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0');
+
+//nH*nkP_F*.%8z}v
+//93RYeUheyMSzCJzd
 
 app.post('/register', async (req,res) => {
     const {username,password} = req.body;
@@ -38,7 +43,10 @@ app.post('/login', async (req, res) => {
         //logged in
         jwt.sign({username,id:userDoc._id}, secret, {}, (err,token) => {
             if (err) throw err;
-            res.cookie('token', token).json('ok');
+            res.cookie('token', token).json({
+                id:userDoc._id,
+                username,
+            });
         });
     } else {
         res.status(400).json('Wrong credentials');
@@ -55,6 +63,10 @@ app.get('/profile', (req, res) => {
 
 app.post('/logout', (req, res) => {
     res.cookie('token', '').json('ok');
+});
+
+app.post('/post', uploadMiddleware.single('file'), (req, res) => {
+    res.json({file:req.file});
 });
 
 app.listen(4000);
